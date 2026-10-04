@@ -1,11 +1,12 @@
 
 def accuracy(y_true, y_pred):
-    """Accuracy classification score.
-    
+    """
+    Accuracy classification score.
+
     Proportion of correct predictions among the total number of predictions.
     Useful for balanced datasets.
     
-    Formula:
+    Equation:
         Accuracy = (TP + TN) / (TP + TN + FP + FN)
     
     Args:

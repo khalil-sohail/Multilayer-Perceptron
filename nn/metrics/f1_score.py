@@ -1,13 +1,14 @@
 
 def f1_score(y_true, y_pred):
-    """F1 score (harmonic mean of precision and recall).
+    """
+    F1 score (harmonic mean of precision and recall).
     
     Provides a single score that balances precision and recall. Useful for
     imbalanced datasets where you care about both false positives and negatives.
     
-    Formula:
-        F1 = 2 * (Precision * Recall) / (Precision + Recall)
-          = (2 * TP) / (2 * TP + FP + FN)
+    Equation:
+        F1 = (2 * (Precision * Recall) / (Precision + Recall))
+           = (2 * TP) / (2 * TP + FP + FN)
     
     Args:
         y_true (array-like): Ground truth binary labels.

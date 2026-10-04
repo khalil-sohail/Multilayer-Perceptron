@@ -5,7 +5,7 @@ def precision(y_true, y_pred):
     Proportion of predicted positive cases that were actually positive.
     Useful when false positives are costly.
     
-    Formula:
+    Equation:
         Precision = TP / (TP + FP)
     
     Args:

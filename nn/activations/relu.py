@@ -4,7 +4,9 @@ class ReLU:
     """
     A ReLU (Rectified Linear Unit) activation function for the MLP.
     This activation function applies the ReLU operation to the input data, which sets all negative values to zero and keeps positive values unchanged.
-    relu(x) = max(0, x)
+
+    Equation:
+        relu(x) = max(0, x)
 
     Attributes:
         inputs (numpy.ndarray): The input data to the activation function.

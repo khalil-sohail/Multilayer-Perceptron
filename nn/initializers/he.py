@@ -3,7 +3,10 @@ import numpy as np
 def he_normal(input_size: int, output_size: int, rng=None):
     """
     Generates a weight matrix with values drawn from a normal distribution using He initialization. (Best with ReLU-family activation functions)
-    sigma = sqrt(2 / input_size)
+
+    Equation:
+        sigma = sqrt(2 / input_size)
+        weights ~ N(0, sigma^2)
     
     Args:
         input_size (int): The number of input units.

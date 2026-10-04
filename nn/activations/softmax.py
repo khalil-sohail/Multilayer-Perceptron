@@ -4,7 +4,10 @@ class Softmax:
     """
     A Softmax activation function for the MLP.
     This activation function applies the Softmax operation to the input data, which converts the input values into probabilities that sum to 1.
-    softmax(x_i) = exp(x_i) / sum(exp(x_j)) for all j
+
+    Equation:
+        softmax(x) = Σ_i_j (exp(x_i) / sum(exp(x_j)))
+
     Attributes:
         inputs (numpy.ndarray): The input data to the activation function.
         output (numpy.ndarray): The output of the activation function after applying the Softmax operation.

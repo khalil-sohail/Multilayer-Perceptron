@@ -4,7 +4,9 @@ class Tanh:
     """
     A Tanh (Hyperbolic Tangent) activation function for the MLP.
     This activation function applies the Tanh operation to the input data, which maps the input values to a range between -1 and 1.
-    tanh(x) = (exp(x) - exp(-x)) / (exp(x) + exp(-x))
+
+    Equation:
+        tanh(x) = (exp(x) - exp(-x)) / (exp(x) + exp(-x))
     
     Attributes:
         inputs (numpy.ndarray): The input data to the activation function.

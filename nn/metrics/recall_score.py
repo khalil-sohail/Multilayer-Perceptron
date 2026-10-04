@@ -4,7 +4,7 @@ def recall(y_true, y_pred):
     Proportion of actual positive cases that were correctly identified.
     Useful when false negatives are costly.
     
-    Formula:
+    Equation:
         Recall = TP / (TP + FN)
     
     Args:

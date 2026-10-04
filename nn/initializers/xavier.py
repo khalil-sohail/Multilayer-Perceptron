@@ -1,10 +1,12 @@
 import numpy as np
 
-
 def xavier_normal(input_size: int, output_size: int, rng=None):
     """
     Generates a weight matrix with values drawn from a normal distribution. (Best with Sigmoid or Tanh activation functions)
-    Var(W) = sqrt(2 / (input_size + output_size))
+
+    Equation:
+        sigma = sqrt(2 / (input_size + output_size))
+        weights ~ N(0, sigma^2)
     
     Args:
         input_size (int): The number of input units.
@@ -17,5 +19,5 @@ def xavier_normal(input_size: int, output_size: int, rng=None):
     if rng is None:
         rng = np.random.default_rng()
 
-    var = np.sqrt(2.0 / (input_size + output_size))
-    return (rng.standard_normal((input_size, output_size)) * var)
+    sigma = np.sqrt(2.0 / (input_size + output_size))
+    return (rng.standard_normal((input_size, output_size)) * sigma)

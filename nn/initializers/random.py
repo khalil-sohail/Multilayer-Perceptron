@@ -5,6 +5,9 @@ def random_normal(input_size: int, output_size: int, scale: float = 0.01, rng=No
     """
     Generates a weight matrix with random values drawn from a normal distribution.
     
+    Equation:
+        weights ~ N(0, scale^2)
+    
     Args:
         input_size (int): The number of input units.
         output_size (int): The number of output units.

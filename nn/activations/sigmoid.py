@@ -4,7 +4,9 @@ class Sigmoid:
     """
     A Sigmoid activation function for the MLP.
     This activation function applies the Sigmoid operation to the input data, which maps the input values to a range between 0 and 1.
-    sigmoid(x) = 1 / (1 + exp(-x))
+
+    Equation:
+        sigmoid(x) = 1 / (1 + exp(-x))
 
     Attributes:
         inputs (numpy.ndarray): The input data to the activation function.
