@@ -7,6 +7,7 @@ class Softmax:
 
     Equation:
         softmax(x) = Σ_i_j (exp(x_i) / sum(exp(x_j)))
+        softmax'(x) = softmax(x) * (1 - softmax(x))
 
     Attributes:
         inputs (numpy.ndarray): The input data to the activation function.
@@ -28,4 +29,3 @@ class Softmax:
         self.output = exp_values / np.sum(exp_values, axis=1, keepdims=True)
 
         return self.output
-    

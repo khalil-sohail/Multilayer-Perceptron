@@ -1,5 +1,6 @@
 def recall(y_true, y_pred):
-    """Recall (sensitivity or true positive rate) classification score.
+    """
+    Recall (sensitivity or true positive rate) classification score.
     
     Proportion of actual positive cases that were correctly identified.
     Useful when false negatives are costly.

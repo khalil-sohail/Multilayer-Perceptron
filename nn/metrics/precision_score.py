@@ -1,6 +1,7 @@
 
 def precision(y_true, y_pred):
-    """Precision classification score.
+    """
+    Precision classification score.
     
     Proportion of predicted positive cases that were actually positive.
     Useful when false positives are costly.
