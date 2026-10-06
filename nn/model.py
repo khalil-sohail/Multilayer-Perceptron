@@ -19,8 +19,8 @@ class Sequential:
     Attributes:
         layers (list): A list of layers in the model.
         trainable_layers (list): A list of layers that have trainable parameters.
-        optimizer: The optimizer used for updating the model's parameters.
-        loss: The loss function used for calculating the loss during training.
+        optimizer (Optimizer): The optimizer used for updating the model's parameters.
+        loss (Loss): The loss function used for calculating the loss during training.
         metrics (list): A list of metrics to be evaluated during training.
     """
     def __init__(self, layers: List[Layer]):
@@ -31,9 +31,9 @@ class Sequential:
         self.trainable_layers: List[TrainableLayer] = [
             cast(TrainableLayer, layer) for layer in layers if getattr(layer, "trainable", False)
         ]
-        self.optimizer = None
-        self.loss = None
-        self.metrics = []
+        self.optimizer: Optimizer | None = None
+        self.loss: Loss | None = None
+        self.metrics: List[Metric] = []
 
     def forward(self, inputs: Array, training: bool=True) -> Array:
         """
@@ -107,7 +107,7 @@ class Sequential:
         if batch_size is None:
             batch_size = n_samples
 
-        history = { "loss": [] }
+        history: dict[str, list] = { "loss": [] }
         for metric in self.metrics:
             history[metric.__name__] = []
 

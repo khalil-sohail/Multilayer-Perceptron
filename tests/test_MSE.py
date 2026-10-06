@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from nn.losses.mse import MSE
+from nn import MSE
 from tests.utils.gradients import numerical_gradient_loss
 
 class TestMSE(unittest.TestCase):

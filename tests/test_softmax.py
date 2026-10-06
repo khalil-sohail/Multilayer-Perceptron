@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from nn.activations.softmax import Softmax
+from nn import Softmax
 from tests.utils.gradients import numerical_gradient
 
 class TestSoftmax(unittest.TestCase):

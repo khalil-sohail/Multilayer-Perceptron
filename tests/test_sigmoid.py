@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from nn.activations.sigmoid import Sigmoid
+from nn import Sigmoid
 from tests.utils.gradients import numerical_gradient
 
 class TestSigmoid(unittest.TestCase):

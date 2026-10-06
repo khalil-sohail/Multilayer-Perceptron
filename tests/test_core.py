@@ -2,15 +2,15 @@ import unittest
 
 import numpy as np
 
-from nn.activations.linear import Linear
-from nn.activations.relu import ReLU
-from nn.activations.sigmoid import Sigmoid
-from nn.activations.softmax import Softmax
-from nn.activations.tanh import Tanh
-from nn.initializers.he import he_normal
-from nn.initializers.random import random_normal
-from nn.initializers.xavier import xavier_normal
-from nn.layers.dense import Dense
+from nn import Linear
+from nn import ReLU
+from nn import Sigmoid
+from nn import Softmax
+from nn import Tanh
+from nn import he_normal
+from nn import random_normal
+from nn import xavier_normal
+from nn import Dense
 
 
 def numerical_activation_gradient(
@@ -536,4 +536,3 @@ class TestSoftmax(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-    

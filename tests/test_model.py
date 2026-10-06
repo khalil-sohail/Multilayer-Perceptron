@@ -5,11 +5,11 @@ from contextlib import redirect_stdout
 
 import numpy as np
 
-from nn.activations.linear import Linear
-from nn.layers.dense import Dense
-from nn.losses.mse import MSE
-from nn.model import Sequential
-from nn.optimizers.sgd import SGD
+from nn import Linear
+from nn import Dense
+from nn import MSE
+from nn import Sequential
+from nn import SGD
 
 
 class TestSequential(unittest.TestCase):

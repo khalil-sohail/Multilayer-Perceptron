@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from nn.activations.relu import ReLU
+from nn import ReLU
 from tests.utils.gradients import numerical_gradient
 
 class TestReLU(unittest.TestCase):

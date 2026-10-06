@@ -2,8 +2,8 @@ import unittest
 
 import numpy as np
 
-from nn.activations.linear import Linear
 from tests.utils.gradients import numerical_gradient
+from nn import Linear
 
 
 class TestLinear(unittest.TestCase):

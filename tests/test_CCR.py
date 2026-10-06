@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from nn.losses.categorical_cross_entropy import CategoricalCrossEntropy
+from nn import CategoricalCrossEntropy
 from tests.utils.gradients import numerical_gradient_loss
 
 class TestCategoricalCrossEntropy(unittest.TestCase):

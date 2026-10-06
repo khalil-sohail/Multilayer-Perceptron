@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from nn.losses.huber import Huber
+from nn import Huber
 from tests.utils.gradients import numerical_gradient_loss
 
 class TestHuber(unittest.TestCase):

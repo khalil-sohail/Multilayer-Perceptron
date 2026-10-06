@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from nn.activations.tanh import Tanh
+from nn import Tanh
 from tests.utils.gradients import numerical_gradient
 
 class TestTanh(unittest.TestCase):

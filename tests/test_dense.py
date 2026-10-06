@@ -2,8 +2,7 @@ import unittest
 
 import numpy as np
 
-from nn.layers.dense import Dense
-
+from nn import Dense
 
 class TestDense(unittest.TestCase):
     def test_output_shape(self):

@@ -2,8 +2,7 @@ import unittest
 
 import numpy as np
 
-from nn.initializers.xavier import xavier_normal
-
+from nn import xavier_normal
 
 class TestXavierInitializer(unittest.TestCase):
     def test_shape(self):

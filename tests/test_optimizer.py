@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from nn.layers.dense import Dense
+from nn import Dense
 from nn.optimizers.sgd import SGD
 
 

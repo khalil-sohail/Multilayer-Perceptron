@@ -2,8 +2,7 @@ import unittest
 
 import numpy as np
 
-from nn.initializers.random import random_normal
-
+from nn import random_normal
 
 class TestRandomInitializer(unittest.TestCase):
     def test_shape(self):

@@ -2,8 +2,7 @@ import unittest
 
 import numpy as np
 
-from nn.initializers.he import he_normal
-
+from nn import he_normal
 
 class TestHeInitializer(unittest.TestCase):
     def test_shape(self):

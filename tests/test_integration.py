@@ -7,18 +7,18 @@ from contextlib import redirect_stdout
 
 import numpy as np
 
-from nn.activations.linear import Linear
-from nn.activations.relu import ReLU
-from nn.activations.softmax import Softmax
-from nn.layers.dense import Dense
-from nn.losses.categorical_cross_entropy import CategoricalCrossEntropy
-from nn.losses.mse import MSE
-from nn.metrics.accuracy import accuracy
-from nn.metrics.f1_score import f1_score
-from nn.metrics.precision import precision
-from nn.metrics.recall import recall
-from nn.model import Sequential
-from nn.optimizers.sgd import SGD
+from nn import Linear
+from nn import ReLU
+from nn import Softmax
+from nn import Dense
+from nn import CategoricalCrossEntropy
+from nn import MSE
+from nn import accuracy
+from nn import f1_score
+from nn import precision
+from nn import recall
+from nn import Sequential
+from nn import SGD
 
 
 class TestRegressionIntegration(unittest.TestCase):

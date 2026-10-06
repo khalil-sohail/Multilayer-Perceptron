@@ -2,15 +2,15 @@ import unittest
 
 import numpy as np
 
-from nn.losses.binary_cross_entropy import BinaryCrossEntropy
-from nn.losses.categorical_cross_entropy import CategoricalCrossEntropy
-from nn.losses.huber import Huber
-from nn.losses.mse import MSE
+from nn import BinaryCrossEntropy
+from nn import CategoricalCrossEntropy
+from nn import Huber
+from nn import MSE
 
-from nn.metrics.accuracy import accuracy
-from nn.metrics.f1_score import f1_score
-from nn.metrics.precision import precision
-from nn.metrics.recall import recall
+from nn import accuracy
+from nn import f1_score
+from nn import precision
+from nn import recall
 
 
 def numerical_loss_gradient(

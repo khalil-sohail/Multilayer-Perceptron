@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from nn.losses.binary_cross_entropy import BinaryCrossEntropy
+from nn import BinaryCrossEntropy
 from tests.utils.gradients import numerical_gradient_loss
 
 class TestBinaryCrossEntropy(unittest.TestCase):
