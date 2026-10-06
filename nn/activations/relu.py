@@ -1,4 +1,8 @@
+from numpy.typing import NDArray
+
 import numpy as np
+
+Array = NDArray[np.float64]
 
 class ReLU:
     """
@@ -13,7 +17,13 @@ class ReLU:
         inputs (numpy.ndarray): The input data to the activation function.
     """
 
-    def forward(self, inputs: np.ndarray) -> np.ndarray:
+    def __init__(self):
+        """
+        Initializes the ReLU activation function.
+        """
+        self.trainable = False
+
+    def forward(self, inputs: Array, training: bool=True) -> Array:
         """
         Performs the forward pass of the ReLU activation function.
 
@@ -23,10 +33,12 @@ class ReLU:
         Returns:
             numpy.ndarray: The output of the activation function, where all negative values are set to zero and positive values remain unchanged.
         """
-        self.inputs = inputs
+        if training:
+            self.inputs = inputs
+            
         return np.maximum(0, inputs)
 
-    def backward(self, grad_output: np.ndarray) -> np.ndarray:
+    def backward(self, grad_output: Array) -> Array:
         """
         Performs the backward pass of the ReLU activation function.
 
@@ -39,4 +51,5 @@ class ReLU:
         """
         dinputs = grad_output.copy()
         dinputs[self.inputs <= 0] = 0
+
         return dinputs

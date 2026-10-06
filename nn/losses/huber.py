@@ -1,4 +1,8 @@
+from numpy.typing import NDArray
+
 import numpy as np
+
+Array = NDArray[np.float64]
 
 class Huber:
     """
@@ -7,7 +11,8 @@ class Huber:
     Making it is less sensitive to outliers than the mean squared error loss.
 
     Equation:
-        L = ( |P - T| <= delta ) ? ( 1/2 * (P - T)^2 ) : ( delta * (|P - T| - 1/2 * delta) )
+        L  = ( |P - T| <= delta ) ? ( 1/2 * (P - T)^2 ) : ( delta * (|P - T| - 1/2 * delta) )
+        L' = ( |P - T| <= delta ) ?      ( P - T )      :       ( delta * sign(P - T) )
           
     Attributes:
         delta (float): The threshold at which to switch between quadratic and linear loss.
@@ -21,10 +26,14 @@ class Huber:
         """
         self.delta = delta
 
-    def forward(self, y_pred: np.ndarray, y_true: np.ndarray) -> float:
+    def forward(self, y_pred: Array, y_true: Array, training: bool=True) -> float:
         """
         Computes the Huber loss.
         """
+        if training:
+            self.y_pred = y_pred
+            self.y_true = y_true
+
         error = y_pred - y_true
         absolute_error = np.abs(error)
 
@@ -37,3 +46,18 @@ class Huber:
         )
 
         return float(np.mean(losses))
+
+    def backward(self) -> Array:
+        """
+        Computes the gradient of the Huber loss with respect to the predictions.
+        """
+        error = self.y_pred - self.y_true
+        absolute_error = np.abs(error)
+
+        grad = np.where(
+            absolute_error <= self.delta,
+            error,
+            self.delta * np.sign(error),
+        )
+
+        return grad / self.y_pred.size

@@ -1,4 +1,8 @@
+from numpy.typing import NDArray
+
 import numpy as np
+
+Array = NDArray[np.float64]
 
 class Tanh:
     """
@@ -14,7 +18,13 @@ class Tanh:
         output (numpy.ndarray): The output of the activation function after applying the Tanh operation.
     """
 
-    def forward(self, inputs):
+    def __init__(self):
+        """
+        Initializes the Tanh activation function.
+        """
+        self.trainable = False
+
+    def forward(self, inputs: Array, training: bool=True) -> Array:
         """
         Performs the forward pass of the Tanh activation function.
 
@@ -24,11 +34,15 @@ class Tanh:
         Returns:
             numpy.ndarray: The output of the activation function, where the input values are mapped to a range between -1 and 1.
         """
-        self.inputs = inputs
-        self.output = np.tanh(inputs)
+        output = np.tanh(inputs)
+        
+        if training:
+            self.inputs = inputs
+            self.output = output
+
         return self.output
 
-    def backward(self, grad_output):
+    def backward(self, grad_output: Array) -> Array:
         """
         Performs the backward pass of the Tanh activation function.
 

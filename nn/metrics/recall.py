@@ -17,4 +17,7 @@ def recall(y_true, y_pred):
     """
     TP = sum(1 for true, pred in zip(y_true, y_pred) if pred == 1 and true == 1)
     FN = sum(1 for true, pred in zip(y_true, y_pred) if pred == 0 and true == 1)
+
+    if TP + FN == 0:
+        return 0.0
     return TP / (TP + FN)

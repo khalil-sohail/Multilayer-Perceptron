@@ -1,4 +1,8 @@
+from numpy.typing import NDArray
+
 import numpy as np
+
+Array = NDArray[np.float64]
 
 class Linear:
     """
@@ -12,20 +16,28 @@ class Linear:
     Attributes:
         None
     """
+
+    def __init__(self):
+        """
+        Initializes the Linear activation function.
+        """
+        self.trainable = False
     
-    def forward(self, inputs: np.ndarray) -> np.ndarray:
+    def forward(self, inputs: Array, training: bool=True) -> Array:
         """
         Performs the forward pass of the Linear activation function.
-
+    
         Args:
             inputs (numpy.ndarray): The input data to the activation function.
+            training (bool): Whether the layer is in training mode.
+
 
         Returns:
             numpy.ndarray: The output of the activation function, which is the same as the input.
         """
         return inputs
 
-    def backward(self, grad_output: np.ndarray) -> np.ndarray:
+    def backward(self, grad_output: Array) -> Array:
         """
         Performs the backward pass of the Linear activation function.
 

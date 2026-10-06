@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 
 from nn.activations.relu import ReLU
-from tests.numerical_gradient import numerical_gradient
+from tests.utils.gradients import numerical_gradient
 
 class TestReLU(unittest.TestCase):
     def test_negative_values_become_zero(self):

@@ -35,3 +35,46 @@ def numerical_gradient(activation, inputs, grad_output, epsilon=1e-5):
         ) / (2.0 * epsilon)
 
     return gradient
+
+def numerical_gradient_loss(loss_factory, y_pred, y_true, epsilon=1e-5):
+    """
+    Numerically approximate dL/dy_pred using:
+
+        dL/dx ≈
+        (L(x + eps) - L(x - eps))
+        / (2 * eps)
+    """
+
+    gradient = np.zeros_like(
+        y_pred,
+        dtype=float,
+    )
+
+    for index in np.ndindex(y_pred.shape):
+        pred_plus = y_pred.copy()
+        pred_minus = y_pred.copy()
+
+        pred_plus[index] += epsilon
+        pred_minus[index] -= epsilon
+
+        loss_plus = loss_factory().forward(
+            pred_plus,
+            y_true,
+        )
+
+        loss_minus = loss_factory().forward(
+            pred_minus,
+            y_true,
+        )
+
+        gradient[index] = (
+            loss_plus - loss_minus
+        ) / (2.0 * epsilon)
+
+    return gradient
+
+
+
+
+
+

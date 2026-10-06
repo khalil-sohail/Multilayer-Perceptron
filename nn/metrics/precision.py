@@ -18,4 +18,7 @@ def precision(y_true, y_pred):
     """
     TP = sum(1 for true, pred in zip(y_true, y_pred) if pred == 1 and true == 1)
     FP = sum(1 for true, pred in zip(y_true, y_pred) if pred == 1 and true == 0)
+
+    if TP + FP == 0:
+        return 0.0
     return TP / (TP + FP)

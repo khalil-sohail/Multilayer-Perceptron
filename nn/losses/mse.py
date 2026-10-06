@@ -1,4 +1,8 @@
+from numpy.typing import NDArray
+
 import numpy as np
+
+Array = NDArray[np.float64]
 
 class MSE:
     """
@@ -8,13 +12,30 @@ class MSE:
     
     Equation:
         MSE = (1/n) * Σ_i(P_i - T_i)^2
+        MSE' = (2/n) * [(P_0 - T_0), (P_1 - T_1), ..., (P_n-1 - T_n-1)]
     
     Attributes:
         None
     """
-    def forward(self, y_pred: np.ndarray, y_true: np.ndarray) -> float:
+
+    def __init__(self):
+        """
+        Initializes the Mean Squared Error loss function.
+        """
+        pass
+
+    def forward(self, y_pred: Array, y_true: Array, training: bool=True) -> float:
         """
         Computes the mean squared error loss.
         """
-        
+        if training:
+            self.y_pred = y_pred
+            self.y_true = y_true
+
         return float(np.mean((y_pred - y_true) ** 2))
+
+    def backward(self) -> Array:
+        """
+        Computes the gradient of the mean squared error loss with respect to the predictions.
+        """
+        return (2.0 / self.y_pred.size) * (self.y_pred - self.y_true)

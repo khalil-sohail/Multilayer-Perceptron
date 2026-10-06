@@ -1,6 +1,9 @@
+from ..initializers.he import he_normal
+from numpy.typing import NDArray
+
 import numpy as np
 
-from ..initializers.he import he_normal
+Array = NDArray[np.float64]
 
 class Dense:
     """
@@ -23,27 +26,32 @@ class Dense:
         """
         self.weights = initializer(input_size, output_size, rng)
         self.biases = np.zeros((1, output_size))
+        self.trainable = True
 
-    def forward(self, inputs: np.ndarray) -> np.ndarray:
+    def forward(self, inputs: Array, training: bool=True) -> Array:
         """
         Performs the forward pass of the Dense layer.
 
         Args:
             inputs (numpy.ndarray): The input data to the layer.
+            training (bool): Whether the layer is in training mode.
 
         Returns:
             numpy.ndarray: The output of the layer after applying the linear transformation.
         """
-        self.inputs = inputs
+        if training:
+            self.inputs = inputs
+
         return inputs @ self.weights + self.biases
 
-    def backward(self, grad_output: np.ndarray):
+    def backward(self, grad_output: Array) -> Array:
         """
         Performs the backward pass of the Dense layer.
 
 
         Args:
             grad_output (numpy.ndarray): The gradient of the loss with respect to the output of the layer.
+            training (bool): Whether the layer is in training mode.
             inputs (numpy.ndarray): The input data to the layer.
 
         Equation:
@@ -59,8 +67,8 @@ class Dense:
                 - dweights (numpy.ndarray): The gradient of the loss with respect to the weights of the layer.
                 - dbiases (numpy.ndarray): The gradient of the loss with respect to the biases of the layer.
         """
-        dweights = self.inputs.T @ grad_output
-        dbiases = np.sum(grad_output, axis=0, keepdims=True)
-        dinputs = grad_output @ self.weights.T
+        self.grad_weights = self.inputs.T @ grad_output
+        self.grad_biases = np.sum(grad_output, axis=0, keepdims=True)
         
-        return dinputs, dweights, dbiases
+        dinputs = grad_output @ self.weights.T
+        return dinputs

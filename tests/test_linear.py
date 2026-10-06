@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 
 from nn.activations.linear import Linear
-from tests.numerical_gradient import numerical_gradient
+from tests.utils.gradients import numerical_gradient
 
 
 class TestLinear(unittest.TestCase):

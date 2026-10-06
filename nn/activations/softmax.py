@@ -1,4 +1,8 @@
+from numpy.typing import NDArray
+
 import numpy as np
+
+Array = NDArray[np.float64]
 
 class Softmax:
     """
@@ -14,18 +18,45 @@ class Softmax:
         output (numpy.ndarray): The output of the activation function after applying the Softmax operation.
     """
 
-    def forward(self, inputs):
+    def __init__(self):
+        """
+        Initializes the Softmax activation function.
+        """
+        self.trainable = False
+
+    def forward(self, inputs: Array, training: bool=True) -> Array:
         """
         Performs the forward pass of the Softmax activation function.
+
         Args:
             inputs (numpy.ndarray): The input data to the activation function.
+            training (bool): Whether the layer is in training mode.
+
         Returns:
             numpy.ndarray: The output of the activation function, where the input values are converted into probabilities that sum to 1.
         """
-        self.inputs = inputs
-
         shifted = inputs - np.max(inputs, axis=1, keepdims=True)
         exp_values = np.exp(shifted)
-        self.output = exp_values / np.sum(exp_values, axis=1, keepdims=True)
+        output = exp_values / np.sum(exp_values, axis=1, keepdims=True)
 
-        return self.output
+        if training:
+            self.inputs = inputs
+            self.output = output
+
+        return output
+
+    def backward(self, grad_output: Array) -> Array:
+        """
+        Performs the backward pass of the Softmax activation function.
+
+        Args:
+            grad_output (numpy.ndarray): The gradient of the loss with respect to the output of the activation function.
+
+        Returns:
+            numpy.ndarray: The gradient of the loss with respect to the input of the activation function.
+        """
+        
+        dot = np.sum(grad_output * self.output, axis=1, keepdims=True)
+        grad_input = self.output * (grad_output - dot)
+
+        return grad_input

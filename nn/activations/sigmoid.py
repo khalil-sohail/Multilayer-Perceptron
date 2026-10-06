@@ -1,4 +1,8 @@
+from numpy.typing import NDArray
+
 import numpy as np
+
+Array = NDArray[np.float64]
 
 class Sigmoid:
     """
@@ -14,7 +18,13 @@ class Sigmoid:
         output (numpy.ndarray): The output of the activation function after applying the Sigmoid operation.
     """
 
-    def forward(self, inputs):
+    def __init__(self):
+        """
+        Initializes the Sigmoid activation function.
+        """
+        self.trainable = False
+
+    def forward(self, inputs: Array, training: bool=True) -> Array:
         """
         Performs the forward pass of the Sigmoid activation function.
 
@@ -24,11 +34,15 @@ class Sigmoid:
         Returns:
             numpy.ndarray: The output of the activation function, where the input values are mapped to a range between 0 and 1.
         """
-        self.inputs = inputs
-        self.output = 1.0 / (1.0 + np.exp(-inputs))
+        output = 1.0 / (1.0 + np.exp(-inputs))
+
+        if training:
+            self.inputs = inputs
+            self.output = output
+
         return self.output
 
-    def backward(self, grad_output):
+    def backward(self, grad_output: Array) -> Array:
         """
         Performs the backward pass of the Sigmoid activation function.
 

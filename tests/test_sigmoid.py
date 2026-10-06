@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 
 from nn.activations.sigmoid import Sigmoid
-from tests.numerical_gradient import numerical_gradient
+from tests.utils.gradients import numerical_gradient
 
 class TestSigmoid(unittest.TestCase):
     def test_zero_returns_half(self):
