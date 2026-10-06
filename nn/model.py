@@ -193,26 +193,33 @@ class Sequential:
         predictions = self.predict(X)
         return self.loss.forward(predictions, y, training=False)
 
-    def save(self, path: str):
+    def save(self, path: str) -> None:
         """
-        Saves the model to the specified path.
+        Saves the Sequential model to a file using pickle.
+        this method may not work if the model contains non-pickleable objects.
+        For example, using lambda functions as metrics or loss functions will cause this method to fail.
 
         Args:
             path (str): The file path where the model will be saved.
         """
-        with open(path, 'wb') as f:
+        with open(path, "wb") as f:
             pickle.dump(self, f)
 
+
     @classmethod
-    def load(cls, path: str) -> 'Sequential':
+    def load(cls, path: str) -> "Sequential":
         """
-        Loads the model from the specified path.
+        Loads a Sequential model from a file using pickle.
 
         Args:
             path (str): The file path from where the model will be loaded.
-
         Returns:
             Sequential: The loaded model.
         """
-        with open(path, 'rb') as f:
-            return pickle.load(f)
+        with open(path, "rb") as f:
+            model = pickle.load(f)
+
+        if not isinstance(model, cls):
+            raise TypeError(f"Expected {cls.__name__}, got {type(model).__name__}")
+
+        return model

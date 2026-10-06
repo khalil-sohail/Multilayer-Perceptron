@@ -40,7 +40,7 @@ class Sigmoid:
             self.inputs = inputs
             self.output = output
 
-        return self.output
+        return output
 
     def backward(self, grad_output: Array) -> Array:
         """
