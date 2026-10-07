@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def random_normal(input_size: int, output_size: int, scale: float = 0.01, rng=None):
+def random_normal(input_size: int, output_size: int, scale: float = 0.2, rng=None):
     """
     Generates a weight matrix with random values drawn from a normal distribution.
     

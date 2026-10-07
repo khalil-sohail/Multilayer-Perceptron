@@ -25,6 +25,11 @@ from nn.model import Sequential
 from nn.optimizers.adam import Adam
 from nn.optimizers.sgd import SGD
 
+from nn.preprocessing.StandardScaler import StandardScaler
+from nn.preprocessing.RobustScaler import RobustScaler
+from nn.preprocessing.MinMaxScaler import MinMaxScaler
+
+from nn.model_selection.train_test_split import train_test_split
 
 __all__ = [
     "Sequential",
@@ -53,4 +58,10 @@ __all__ = [
     "precision",
     "recall",
     "f1_score",
+
+    "StandardScaler",
+    "RobustScaler",
+    "MinMaxScaler",
+
+    "train_test_split"
 ]

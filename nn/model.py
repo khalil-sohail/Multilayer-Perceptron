@@ -150,18 +150,25 @@ class Sequential:
             epoch_loss /= n_samples
             history["loss"].append(epoch_loss)
 
-            train_predictions = self.predict(X)
+            train_probabilities = self.forward(X, training=False)
+            train_predictions = np.argmax(train_probabilities, axis=1)
+            true_classes = np.argmax(y, axis=1)
+
             for metric in self.metrics:
-                history[metric.__name__].append(metric(y, train_predictions))
+                history[metric.__name__].append(metric(true_classes, train_predictions))
 
             if validation_data is not None:
                 X_valid, y_valid = validation_data
-                validation_predictions = self.forward(X_valid, training=False)
-                validation_loss = self.loss.forward(validation_predictions, y_valid, training=False)
+
+                validation_probabilities = self.forward(X_valid, training=False)
+                validation_loss = self.loss.forward(validation_probabilities, y_valid, training=False)
                 history["val_loss"].append(validation_loss)
 
+                validation_predictions = np.argmax(validation_probabilities, axis=1)
+                true_classes = np.argmax(y_valid, axis=1)
+
                 for metric in self.metrics:
-                    history[f"val_{metric.__name__}"].append(metric(y_valid, validation_predictions))
+                    history[f"val_{metric.__name__}"].append(metric(true_classes, validation_predictions))
 
         return history
 
@@ -175,6 +182,17 @@ class Sequential:
             numpy.ndarray: The predicted output of the model.
         """
         return self.forward(X, training=False)
+
+    def predict_classes(self, X: Array) -> Array:
+        """
+        Predicts class labels for the given input data.
+
+        Args:
+            X (numpy.ndarray): The input data for making predictions.
+        Returns:
+            numpy.ndarray: The predicted class labels.
+        """
+        return np.argmax(self.forward(X, training=False), axis=1)
 
     def evaluate(self, X: Array, y: Array) -> float:
         """

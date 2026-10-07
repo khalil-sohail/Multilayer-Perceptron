@@ -1,15 +1,15 @@
 import numpy as np
 
-from nn.activations.relu import ReLU
-from nn.activations.softmax import Softmax
-from nn.layers.dense import Dense
-from nn.losses.categorical_cross_entropy import CategoricalCrossEntropy
-from nn.metrics.accuracy import accuracy
-from nn.metrics.precision import precision
-from nn.metrics.recall import recall
-from nn.metrics.f1_score import f1_score
-from nn.model import Sequential
-from nn.optimizers.sgd import SGD
+from nn import ReLU
+from nn import Softmax
+from nn import Dense
+from nn import CategoricalCrossEntropy
+from nn import accuracy
+from nn import precision
+from nn import recall
+from nn import f1_score
+from nn import Sequential
+from nn import SGD
 
 
 def main():

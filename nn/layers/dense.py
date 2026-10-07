@@ -24,7 +24,10 @@ class Dense:
             initializer: The function to use for initializing the weights.
             rng: The random number generator to use.
         """
-        self.weights = initializer(input_size, output_size, rng)
+        if initializer.__name__ == "random_normal":
+            self.weights = initializer(input_size, output_size, 0.2, rng)
+        else:
+            self.weights = initializer(input_size, output_size, rng)
         self.biases = np.zeros((1, output_size))
         self.trainable = True
 
