@@ -1,33 +1,33 @@
-VALID_PHASES = {"process", "train", "predict"}
-
 VALID_PHASES = {
     "process",
     "train",
-    "predict",
+    "predict"
 }
 
 VALID_ACTIVATIONS = {
     "relu",
+    "linear",
     "sigmoid",
-    "tanh",
+    "tanh"
 }
 
 VALID_INITIALIZERS = {
     "random",
     "xavier",
-    "he",
+    "he"
 }
 
-VALID_OPTIMIZERS = {
+VALID_OPTIMIZER_OPTIONS = {
     "sgd",
     "adam",
+    "both"
 }
 
 
 DEFAULT_LAYERS = "24,24,24"
 DEFAULT_ACTIVATION = "sigmoid"
 DEFAULT_INITIALIZER = "xavier"
-DEFAULT_OPTIMIZER = "sgd"
+DEFAULT_OPTIMIZER = "both"
 
 DEFAULT_EPOCHS = "84"
 DEFAULT_BATCH_SIZE = "8"
@@ -35,7 +35,7 @@ DEFAULT_BATCH_SIZE = "8"
 DEFAULT_MODEL_PATH = "breast_cancer.model"
 DEFAULT_SCALER_PATH = "breast_cancer.scaler"
 
-DEFAULT_SGD_LEARNING_RATE = "0.01"
+DEFAULT_SGD_LEARNING_RATE = "0.0314"
 DEFAULT_ADAM_LEARNING_RATE = "0.001"
 
 def print_usage():
@@ -60,10 +60,11 @@ def print_usage():
         "[layers=<size,size,...>] "
         "[activation=<relu|sigmoid|tanh>] "
         "[initializer=<random|xavier|he>] "
-        "[optimizer=<sgd|adam>] "
+        "[optimizer=<sgd|adam|both>] "
         "[epochs=<number>] "
         "[batch_size=<number>] "
-        "[learning_rate=<number>]\n"
+        "[learning_rate_sgd=<number>] "
+        "[learning_rate_adam=<number>]\n"
         "\n"
         "  Training defaults:\n"
         f"    model={DEFAULT_MODEL_PATH}\n"
@@ -74,21 +75,22 @@ def print_usage():
         f"    optimizer={DEFAULT_OPTIMIZER}\n"
         f"    epochs={DEFAULT_EPOCHS}\n"
         f"    batch_size={DEFAULT_BATCH_SIZE}\n"
-        f"    learning_rate={DEFAULT_SGD_LEARNING_RATE} for SGD, "
-        f"{DEFAULT_ADAM_LEARNING_RATE} for Adam\n"
+        f"    learning_rate_sgd={DEFAULT_SGD_LEARNING_RATE} for SGD, "
+        f"    learning_rate_adam={DEFAULT_ADAM_LEARNING_RATE} for Adam\n"
         "\n"
         "  Example:\n"
         "    python main.py "
         "phase=train "
         "dataset=data_training.csv "
         "validation=data_validation.csv "
-        "layers=24,16,16 "
+        "layers=24,24,24 "
         "activation=sigmoid "
         "initializer=xavier "
-        "optimizer=adam "
+        "optimizer=both "
         "epochs=84 "
         "batch_size=8 "
-        "learning_rate=0.001\n"
+        "learning_rate_sgd=0.0314\n"
+        "learning_rate_adam=0.001\n"
         "\n"
         "  Predict:\n"
         "    python main.py "
@@ -104,6 +106,7 @@ def print_usage():
 
 
 def parse_args(argv: list[str]) -> dict[str, str]:
+
     """
     Parses command-line arguments and validates them.
     
@@ -144,7 +147,8 @@ def parse_args(argv: list[str]) -> dict[str, str]:
         "optimizer",
         "epochs",
         "batch_size",
-        "learning_rate",
+        "learning_rate_sgd",
+        "learning_rate_adam"
     }
 
     unknown = set(args) - allowed
@@ -174,7 +178,8 @@ def parse_args(argv: list[str]) -> dict[str, str]:
             "optimizer",
             "epochs",
             "batch_size",
-            "learning_rate",
+            "learning_rate_sgd",
+            "learning_rate_adam"
         } & args.keys()
 
         if forbidden:
@@ -183,6 +188,8 @@ def parse_args(argv: list[str]) -> dict[str, str]:
         if "validation" not in args:
             raise ValueError("Training requires validation=<path_to_validation_dataset>")
 
+        args.setdefault("learning_rate_adam", DEFAULT_ADAM_LEARNING_RATE)
+        args.setdefault("learning_rate_sgd", DEFAULT_SGD_LEARNING_RATE)
         args.setdefault("initializer", DEFAULT_INITIALIZER)
         args.setdefault("activation", DEFAULT_ACTIVATION)
         args.setdefault("batch_size", DEFAULT_BATCH_SIZE)
@@ -231,20 +238,14 @@ def parse_args(argv: list[str]) -> dict[str, str]:
         args["initializer"] = initializer
 
         optimizer = args["optimizer"].lower()
-        if optimizer not in VALID_OPTIMIZERS:
+        if optimizer not in VALID_OPTIMIZER_OPTIONS:
             raise ValueError(
                 f"Invalid optimizer "
                 f"'{args['optimizer']}'. "
                 f"Expected one of: "
-                f"{', '.join(sorted(VALID_OPTIMIZERS))}"
+                f"{', '.join(sorted(VALID_OPTIMIZER_OPTIONS))}"
             )
         args["optimizer"] = optimizer
-
-        if "learning_rate" not in args:
-            if optimizer == "adam":
-                args["learning_rate"] = DEFAULT_ADAM_LEARNING_RATE
-            else:
-                args["learning_rate"] = DEFAULT_SGD_LEARNING_RATE
 
         try:
             epochs = int(args["epochs"])
@@ -261,11 +262,18 @@ def parse_args(argv: list[str]) -> dict[str, str]:
             raise ValueError("batch_size must be greater than 0.")
 
         try:
-            learning_rate = float(args["learning_rate"])
+            learning_rate_sgd = float(args["learning_rate_sgd"])
         except ValueError:
-            raise ValueError("learning_rate must be a number.") from None
-        if learning_rate <= 0.0:
-            raise ValueError("learning_rate must be greater than 0.")
+            raise ValueError("learning_rate_sgd must be a number.") from None
+        if learning_rate_sgd <= 0.0:
+            raise ValueError("learning_rate_sgd must be greater than 0.")
+
+        try:
+            learning_rate_adam = float(args["learning_rate_adam"])
+        except ValueError:
+            raise ValueError("learning_rate_adam must be a number.") from None
+        if learning_rate_adam <= 0.0:
+            raise ValueError("learning_rate_adam must be greater than 0.")
 
     elif phase == "predict":
         forbidden = {
@@ -276,14 +284,14 @@ def parse_args(argv: list[str]) -> dict[str, str]:
             "optimizer",
             "epochs",
             "batch_size",
-            "learning_rate",
+            "learning_rate_sgd",
+            "learning_rate_adam"
         } & args.keys()
 
         if forbidden:
             raise ValueError(f"Prediction phase does not accept: {', '.join(sorted(forbidden))}")
 
         args.setdefault("model", DEFAULT_MODEL_PATH)
-
         args.setdefault("scaler", DEFAULT_SCALER_PATH)
 
     return args

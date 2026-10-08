@@ -1,6 +1,3 @@
-from nn.losses.categorical_cross_entropy import CategoricalCrossEntropy
-from nn.optimizers.adam import Adam
-
 from .utils import *
 from nn import (
     Sequential,
@@ -22,12 +19,16 @@ from nn import (
     Huber,
     MSE,
     EarlyStopping,
+    Linear,
+    CategoricalCrossEntropy,
+    Adam
 )
 
 activation_map = {
     "relu": ReLU,
     "sigmoid": Sigmoid,
     "tanh": Tanh,
+    "linear": Linear,
 }
 
 initializer_map = {
@@ -45,7 +46,7 @@ class BreastCancerTrainer:
     """
     A class for training a neural network model on breast cancer data.
     """
-    def __init__(self, args: dict[str, str]):
+    def __init__(self, args: dict[str, str], rng: np.random.Generator | None = None):
         """
         Initializes the BreastCancerTrainer using the provided training configuration.
 
@@ -75,6 +76,7 @@ class BreastCancerTrainer:
                     input_size,
                     output_size,
                     initializer=initializer,
+                    rng=rng,
                 )
             )
 
@@ -86,10 +88,11 @@ class BreastCancerTrainer:
                 input_size,
                 2,
                 initializer=initializer,
+                rng=rng,
             )
         )
         layers.append(Softmax())
-        self.model = Sequential(layers)
+        self.model = Sequential(layers, rng=rng)
 
         self.model.compile(
             optimizer=optimizer_class(learning_rate=learning_rate),

@@ -23,8 +23,9 @@ class Sequential:
         optimizer (Optimizer): The optimizer used for updating the model's parameters.
         loss (Loss): The loss function used for calculating the loss during training.
         metrics (list): A list of metrics to be evaluated during training.
+        rng (numpy.random.Generator): The random number generator to be used for random operations.
     """
-    def __init__(self, layers: List[Layer]):
+    def __init__(self, layers: List[Layer], rng: np.random.Generator | None = None):
         """
         Initializes the Sequential model with a list of layers.
         """
@@ -35,6 +36,7 @@ class Sequential:
         self.optimizer: Optimizer | None = None
         self.loss: Loss | None = None
         self.metrics: List[Metric] = []
+        self.rng = rng or np.random.default_rng()
 
     def get_weights(self) -> list[tuple[Array, Array]]:
         return [
@@ -165,7 +167,7 @@ class Sequential:
 
         for epoch in range(epochs):
             if shuffle:
-                indices = np.random.permutation(n_samples)
+                indices = self.rng.permutation(n_samples)
                 X_epoch = X[indices]
                 y_epoch = y[indices]
             else:

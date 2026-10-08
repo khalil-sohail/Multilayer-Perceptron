@@ -7,6 +7,8 @@ from application import (
     parse_args,
 )
 
+import numpy as np
+import traceback
 import sys
 
 def process_phase(args: dict[str, str]):
@@ -21,21 +23,33 @@ def process_phase(args: dict[str, str]):
     print("Validation dataset: data_validation.csv")
 
 def train_phase(args: dict[str, str]):
-    trainer = BreastCancerTrainer(args)
+    if args["optimizer"] == "both":
+        optimizers = ["sgd", "adam"]
+    else:
+        optimizers = [args["optimizer"]]
 
-    trainer.load_data(train_path=args["dataset"], valid_path=args["validation"])
-    trainer.preprocess_data()
+    optimizer_hist = {"sgd": {}, "adam": {}}
+    for optimizer in optimizers:
+        args["learning_rate"] = args[f"learning_rate_{optimizer}"]
+        args["optimizer"] = optimizer
+        rng = np.random.default_rng(42)
+        trainer = BreastCancerTrainer(args, rng=rng)
 
-    history = trainer.train(epochs=int(args["epochs"]), batch_size=int(args["batch_size"]))
-    model_path = args["model"]
-    scaler_path = args["scaler"]
+        trainer.load_data(train_path=args["dataset"], valid_path=args["validation"])
+        trainer.preprocess_data()
 
-    trainer.save(model_path=model_path, scaler_path=scaler_path)
+        history = trainer.train(epochs=int(args["epochs"]), batch_size=int(args["batch_size"]))
+        optimizer_hist[optimizer] = history
 
-    print(f"Model saved to:  {model_path}")
-    print(f"Scaler saved to: {scaler_path}")
+        model_path = optimizer + "_" + args["model"]
+        scaler_path = optimizer + "_" + args["scaler"]
 
-    plot_history(history)
+        trainer.save(model_path=model_path, scaler_path=scaler_path)
+
+        print(f"Model saved to:  {model_path}")
+        print(f"Scaler saved to: {scaler_path}")
+
+    plot_history(optimizer_hist)
 
 
 def predict_phase(args: dict[str, str]):
@@ -72,6 +86,7 @@ if __name__ == "__main__":
         Main(args)
 
     except Exception as error:
+        traceback.print_exc()
         print(f"Error: {error}\n")
         print_usage()
         sys.exit(1)
