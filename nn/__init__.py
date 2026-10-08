@@ -31,6 +31,8 @@ from nn.preprocessing.MinMaxScaler import MinMaxScaler
 
 from nn.model_selection.train_test_split import train_test_split
 
+from nn.callbacks.early_stopping import EarlyStopping
+
 __all__ = [
     "Sequential",
 
@@ -63,5 +65,7 @@ __all__ = [
     "RobustScaler",
     "MinMaxScaler",
 
-    "train_test_split"
+    "train_test_split",
+
+    "EarlyStopping"
 ]

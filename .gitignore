@@ -219,3 +219,7 @@ __marimo__/
 
 #
 .vscode/
+*.model
+*.scaler
+data_training.csv
+data_validation.csv

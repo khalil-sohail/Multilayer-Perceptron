@@ -40,12 +40,39 @@ COLUMNS = [
 ]
 
 def load_dataset(file_path: str) -> pd.DataFrame:
+    """
+    Loads a dataset from a CSV file and assigns column names.
+
+    Args:
+        file_path (str): The path to the CSV file.
+
+    Returns:
+        pd.DataFrame: The loaded dataset with assigned column names.
+    """
     return pd.read_csv(file_path, header=None, names=COLUMNS)
 
 def encode_labels(y: np.ndarray) -> np.ndarray:
     """
     B -> [1, 0]
     M -> [0, 1]
+
+    args:
+        y: np.ndarray of shape (n_samples,) containing labels as strings ("B" or "M")
+    returns:
+        np.ndarray of shape (n_samples, 2) containing one-hot encoded labels
     """
     binary = np.where(y == "M", 1, 0)
     return np.eye(2, dtype=np.float64)[binary]
+
+def decode_labels(y: np.ndarray) -> np.ndarray:
+    """
+    [1, 0] -> B
+    [0, 1] -> M
+
+    args:
+        y: np.ndarray of shape (n_samples, 2) containing one-hot encoded labels
+    returns:
+        np.ndarray of shape (n_samples,) containing labels as strings ("B" or "M")
+    """
+    binary = np.argmax(y, axis=1)
+    return np.where(binary == 1, "M", "B")

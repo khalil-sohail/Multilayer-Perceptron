@@ -3,6 +3,12 @@ import matplotlib.pyplot as plt
 
 
 def plot_history(history: dict[str, list[float]]) -> None:
+    """
+    Plots the training and validation metrics over the course of training.
+
+    Args:
+        history (dict[str, list[float]]): A dictionary containing the training and validation metrics.
+    """
     metrics = [
         key
         for key in history

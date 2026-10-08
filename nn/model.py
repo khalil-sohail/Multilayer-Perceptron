@@ -1,4 +1,5 @@
 from nn.interfaces.Optimizer import Optimizer, TrainableLayer
+from nn.callbacks.call_back import Callback
 from nn.interfaces.Metric import Metric
 from nn.interfaces.Loss import Loss
 from typing import List, cast
@@ -34,6 +35,38 @@ class Sequential:
         self.optimizer: Optimizer | None = None
         self.loss: Loss | None = None
         self.metrics: List[Metric] = []
+
+    def get_weights(self) -> list[tuple[Array, Array]]:
+        return [
+            (
+                layer.weights.copy(),
+                layer.biases.copy(),
+            ) for layer in self.trainable_layers
+        ]
+
+    def set_weights(self, weights: list[tuple[Array, Array]]) -> None:
+        if len(weights) != len(self.trainable_layers):
+            raise ValueError("Weights do not match the number of trainable layers.")
+
+        for layer, (new_weights, new_biases) in zip(self.trainable_layers, weights):
+            if (layer.weights.shape != new_weights.shape):
+                raise ValueError(
+                    "Weight shape mismatch: "
+                    f"expected "
+                    f"{layer.weights.shape}, "
+                    f"got {new_weights.shape}"
+                )
+
+            if (layer.biases.shape != new_biases.shape):
+                raise ValueError(
+                    "Bias shape mismatch: "
+                    f"expected "
+                    f"{layer.biases.shape}, "
+                    f"got {new_biases.shape}"
+                )
+
+            layer.weights = (new_weights.copy())
+            layer.biases = (new_biases.copy())
 
     def forward(self, inputs: Array, training: bool=True) -> Array:
         """
@@ -78,7 +111,16 @@ class Sequential:
         self.loss = loss
         self.metrics = metrics or []
 
-    def fit(self, X: Array, y: Array, epochs: int, batch_size=None, validation_data=None, shuffle=True):
+    def fit(
+            self,
+            X: Array,
+            y: Array,
+            epochs: int,
+            batch_size=None,
+            validation_data=None,
+            shuffle=True,
+            callbacks: list[Callback] | None = None
+    ) -> dict:
         """
         Trains the Sequential model on the provided training data.
 
@@ -116,7 +158,12 @@ class Sequential:
             for metric in self.metrics:
                 history[f"val_{metric.__name__}"] = []
 
-        for _ in range(epochs):
+        callbacks = callbacks or []
+
+        for callback in callbacks:
+            callback.on_train_begin(self)
+
+        for epoch in range(epochs):
             if shuffle:
                 indices = np.random.permutation(n_samples)
                 X_epoch = X[indices]
@@ -149,6 +196,7 @@ class Sequential:
 
             epoch_loss /= n_samples
             history["loss"].append(epoch_loss)
+            logs = { "loss": epoch_loss }
 
             train_probabilities = self.forward(X, training=False)
             train_predictions = np.argmax(train_probabilities, axis=1)
@@ -170,6 +218,20 @@ class Sequential:
                 for metric in self.metrics:
                     history[f"val_{metric.__name__}"].append(metric(true_classes, validation_predictions))
 
+                logs["val_loss"] = validation_loss
+
+            stop_training = False
+            for callback in callbacks:
+                if callback.on_epoch_end(epoch, logs, self):
+                    stop_training = True
+
+            if stop_training:
+                break
+
+            print(f"Epoch {epoch + 1}/{epochs} - loss: {epoch_loss:.4f} -- val_loss: {logs.get('val_loss', 0):.4f}")
+
+        for callback in callbacks:
+            callback.on_train_end(self)
         return history
 
     def predict(self, X: Array) -> Array:
