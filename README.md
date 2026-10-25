@@ -419,7 +419,15 @@ Neither optimizer is universally superior. Use validation behavior to select set
 
 ## References
 
-- Rumelhart, Hinton, and Williams (1986), [Learning representations by back-propagating errors](https://www.nature.com/articles/323533a0) — foundational backpropagation research.
-- Kingma and Ba, [Adam: A Method for Stochastic Optimization](https://arxiv.org/abs/1412.6980) — moment estimates and bias-corrected adaptive updates.
+- Rumelhart, Hinton, and Williams (1986), [Learning Representations by Back-Propagating Errors](https://www.cs.toronto.edu/~hinton/absps/naturebp.pdf) — foundational backpropagation research (free PDF).
+- Michael Nielsen (2015), [Neural Networks and Deep Learning — Backpropagation](https://neuralnetworksanddeeplearning.com/chap2.html) — mathematical derivation of backpropagation, gradients, and the chain rule.
+- Stanford CS231n, [Backpropagation, Intuitions](https://cs231n.github.io/optimization-2/) — computational graphs, derivatives, and vectorized backpropagation.
+- Stanford CS231n, [Linear Classification: Softmax and Cross-Entropy](https://cs231n.github.io/linear-classify/) — Softmax probabilities, cross-entropy loss, and numerical stability.
+- Kingma and Ba (2014), [Adam: A Method for Stochastic Optimization](https://arxiv.org/abs/1412.6980) — moment estimates and bias-corrected adaptive updates.
+- Stanford CS231n, [Neural Networks Part 3: Learning and Evaluation](https://cs231n.github.io/neural-networks-3/) — SGD, momentum, learning rates, gradient checking, and hyperparameter optimization.
+- Glorot and Bengio (2010), [Understanding the Difficulty of Training Deep Feedforward Neural Networks](https://proceedings.mlr.press/v9/glorot10a.html) — Xavier initialization and training stability.
+- He et al. (2015), [Delving Deep into Rectifiers](https://arxiv.org/abs/1502.01852) — He initialization and rectifier-based neural networks.
 - [NumPy documentation: the absolute basics](https://numpy.org/doc/stable/user/absolute_beginners.html) — arrays, shapes, broadcasting, and numerical operations.
-- [UCI: Breast Cancer Wisconsin (Diagnostic)](https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic) — dataset provenance and feature descriptions.
+- [NumPy documentation: matrix multiplication](https://numpy.org/doc/stable/reference/generated/numpy.matmul.html) — vectorized matrix operations used in Dense layers.
+- [Scikit-learn documentation: RobustScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html) — feature scaling using medians and quantiles.
+- [UCI: Breast Cancer Wisconsin (Diagnostic)](https://archive.ics.uci.edu/dataset/17/breast-cancer-wisconsin-diagnostic) — dataset provenance and feature descriptions.
